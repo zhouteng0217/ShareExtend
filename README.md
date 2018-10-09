@@ -1,13 +1,15 @@
 # ShareExtend
 调用系统分享的Flutter组件，支持分享文本，图片和文件
 
+![screenshot](./screenshot.png)
+
 
 ## 安装
 
 ```
 dependencies:
   share_extend: "^0.0.1"
-```  
+```
 ## 导入
 ```
 import 'package:share_extend/share_extend.dart';
@@ -37,7 +39,7 @@ import 'package:share_extend/share_extend.dart';
           </provider>
   ```
   ```{your_authorities}```  你定义的authorities
-  
+
   ```{your_provider_file}```  你的provider配置文件名
 
   工程的res文件夹下，新建一个xml文件夹，添加一个{your_provider_file}的xml文件，配置类似如下：
@@ -53,7 +55,7 @@ import 'package:share_extend/share_extend.dart';
   </resources>
   ```
   ### Dart中调用
-  
+
   ```
     // authorities 上面定义authorities
     
