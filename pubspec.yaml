@@ -1,7 +1,7 @@
 name: share_extend
 description: A flutter plugin to share text, image, file with systemui.
 version: 0.0.1
-author: zhouteng
+author: zhouteng <qfszyq@gmail.com>
 homepage: https://github.com/zhouteng0217/ShareExtend.git
 
 environment:
