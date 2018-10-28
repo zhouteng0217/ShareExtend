@@ -4,9 +4,11 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
+import android.content.Context;
 import android.content.Intent;
 
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.content.FileProvider;
 
 
@@ -57,7 +59,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler {
       shareIntent.setType("text/plain");
     } else {
       File f = new File(text);
-      Uri uri = FileProvider.getUriForFile(mRegistrar.context(), authorities,f);
+      Uri uri = getUriForFile(mRegistrar.context(), authorities,f);
       if ("file".equals(type)) {
         shareIntent.setType("application/*");
       }
@@ -73,6 +75,14 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler {
     } else {
       chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       mRegistrar.context().startActivity(chooserIntent);
+    }
+  }
+
+  public static Uri getUriForFile(Context context, String authories, File file) {
+    if (Build.VERSION.SDK_INT >= 24) {
+      return FileProvider.getUriForFile(context, authories, file);
+    } else {
+      return Uri.fromFile(file);
     }
   }
 }
