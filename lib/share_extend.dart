@@ -18,14 +18,13 @@ class ShareExtend {
   /// on iOS.
   /// type  "text", "image" ,"file"
   ///
-  static Future<void> share(String text, String type, String authorities,
+  static Future<void> share(String text, String type,
       {Rect sharePositionOrigin}) {
     assert(text != null);
     assert(text.isNotEmpty);
     final Map<String, dynamic> params = <String, dynamic>{
       'text': text,
-      'type': type,
-      'authorities': authorities
+      'type': type
     };
 
     if (sharePositionOrigin != null) {
