@@ -1,6 +1,6 @@
 name: share_extend
 description: A flutter plugin to share text, image, file with system ui. It is compatible with both andorid and ios.
-version: 1.0.3
+version: 1.0.4
 author: zhouteng <qfszyq@gmail.com>
 homepage: https://github.com/zhouteng0217/ShareExtend
 
