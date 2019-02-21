@@ -1,4 +1,4 @@
-## 0.0.4
+## 1.0.4
 
 * Updated to Support Latest Android Dependencies
 

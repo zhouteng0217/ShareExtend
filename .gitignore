@@ -66,3 +66,11 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+
+pubspec.lock
+*.iml
+
+.DS_Store
+.atom/
+.idea/
+.vscode/
