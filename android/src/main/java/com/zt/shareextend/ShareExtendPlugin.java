@@ -1,25 +1,20 @@
 package com.zt.shareextend;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Environment;
+
+import java.io.File;
+import java.util.Map;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-
-import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
-
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-
-
-import java.io.File;
-import java.util.Map;
 
 /**
  * Plugin method host for presenting a share sheet via Intent
@@ -27,7 +22,6 @@ import java.util.Map;
 public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, PluginRegistry.RequestPermissionsResultListener {
 
     /// the authorities for FileProvider
-    private static final String authorities = "com.zt.shareextend.fileprovider";
     private static final int CODE_ASK_PERMISSION = 100;
     private static final String CHANNEL = "share_extend";
 
@@ -84,12 +78,14 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             }
 
             File f = new File(text);
-            Uri uri = getUriForFile(mRegistrar.context(), f);
-            if ("file".equals(type)) {
-                shareIntent.setType("application/*");
-            }
+            Uri uri = ShareUtils.getUriForFile(mRegistrar.context(), f);
+
             if ("image".equals(type)) {
                 shareIntent.setType("image/*");
+            } else if ("video".equals(type)) {
+                shareIntent.setType("video/*");
+            } else {
+                shareIntent.setType("application/*");
             }
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
         }
@@ -126,13 +122,5 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             share(text, type);
         }
         return false;
-    }
-
-    private static Uri getUriForFile(Context context, File file) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            return FileProvider.getUriForFile(context, authorities, file);
-        } else {
-            return Uri.fromFile(file);
-        }
     }
 }

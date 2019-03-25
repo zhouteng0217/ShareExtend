@@ -25,31 +25,42 @@ class _MyAppState extends State<MyApp> {
         appBar: new AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: new Center(
+        body: Container(
+          child: new Center(
             child: new Column(
-          children: <Widget>[
-            new RaisedButton(
-              onPressed: () {
-                ShareExtend.share("share text", "text");
-              },
-              child: new Text("share text"),
+              children: <Widget>[
+                new RaisedButton(
+                  onPressed: () {
+                    ShareExtend.share("share text", "text");
+                  },
+                  child: new Text("share text"),
+                ),
+                new RaisedButton(
+                  onPressed: () async {
+                    File f = await ImagePicker.pickImage(
+                        source: ImageSource.gallery);
+                    ShareExtend.share(f.path, "image");
+                  },
+                  child: new Text("share image"),
+                ),
+                new RaisedButton(
+                  onPressed: () async {
+                    File f = await ImagePicker.pickVideo(
+                        source: ImageSource.gallery);
+                    ShareExtend.share(f.path, "video");
+                  },
+                  child: new Text("share video"),
+                ),
+                new RaisedButton(
+                  onPressed: () {
+                    _shareApplicationDocumentsFile();
+                  },
+                  child: new Text("share file"),
+                ),
+              ],
             ),
-            new RaisedButton(
-              onPressed: () async {
-                File f =
-                    await ImagePicker.pickImage(source: ImageSource.gallery);
-                ShareExtend.share(f.path, "image");
-              },
-              child: new Text("share image"),
-            ),
-            new RaisedButton(
-              onPressed: () {
-                _shareApplicationDocumentsFile();
-              },
-              child: new Text("share file"),
-            ),
-          ],
-        )),
+          ),
+        ),
       ),
     );
   }
