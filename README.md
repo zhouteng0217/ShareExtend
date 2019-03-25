@@ -1,11 +1,11 @@
 # ShareExtend
-调用系统分享的Flutter组件，支持分享文本，图片和文件
+调用系统分享的Flutter组件，支持分享文本、图片、视频和文件
 
 ## 安装
 
 ```
 dependencies:
-  share_extend: "^1.0.4"
+  share_extend: "^1.0.5"
 ```
 ## 导入
 ```
@@ -23,6 +23,11 @@ ShareExtend.share("share text", "text");
 File f =
     await ImagePicker.pickImage(source: ImageSource.gallery);
 ShareExtend.share(f.path, "image");
+
+//分享视频
+File f = await ImagePicker.pickVideo(
+        source: ImageSource.gallery);
+ShareExtend.share(f.path, "video");
 
 //分享文件
 Directory dir = await getApplicationDocumentsDirectory();
