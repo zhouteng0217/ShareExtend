@@ -4,7 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.Build;
 
 import java.io.File;
 import java.util.Map;
@@ -69,16 +69,19 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             shareIntent.putExtra(Intent.EXTRA_TEXT, text);
             shareIntent.setType("text/plain");
         } else {
+            File f = new File(text);
+            if (!f.exists()) {
+                throw new IllegalArgumentException("file not exists");
+            }
 
-            if (isPathInExternalStorage(text)) {
+            if (ShareUtils.shouldRequestPermission(text)) {
                 if (!checkPermisson()) {
                     requestPermission();
                     return;
                 }
             }
 
-            File f = new File(text);
-            Uri uri = ShareUtils.getUriForFile(mRegistrar.context(), f);
+            Uri uri = ShareUtils.getUriForFile(mRegistrar.context(), f, type);
 
             if ("image".equals(type)) {
                 shareIntent.setType("image/*");
@@ -99,13 +102,8 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
         }
     }
 
-    private boolean isPathInExternalStorage(String path) {
-        File storagePath = Environment.getExternalStorageDirectory();
-        return path.startsWith(storagePath.getAbsolutePath());
-    }
-
     private boolean checkPermisson() {
-        if (ContextCompat.checkSelfPermission(mRegistrar.context(), Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(mRegistrar.context(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
@@ -113,7 +111,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
     }
 
     private void requestPermission() {
-        ActivityCompat.requestPermissions(mRegistrar.activity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CODE_ASK_PERMISSION);
+        ActivityCompat.requestPermissions(mRegistrar.activity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_ASK_PERMISSION);
     }
 
     @Override

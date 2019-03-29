@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
@@ -16,7 +17,7 @@ import androidx.core.content.FileProvider;
 public class ShareUtils {
 
     /// get the uri for file
-    public static Uri getUriForFile(Context context, File file) {
+    public static Uri getUriForFile(Context context, File file, String type) {
 
         String authorities = context.getPackageName() + ".fileprovider";
 
@@ -26,7 +27,11 @@ public class ShareUtils {
             uri = Uri.fromFile(file);
         } else {
             //  使用 FileProvider 会在某些 app 下不支持（在使用FileProvider 方式情况下QQ不能支持图片、视频分享，微信不支持视频分享）
-            uri =  FileProvider.getUriForFile(context, authorities, file);
+            uri = FileProvider.getUriForFile(context, authorities, file);
+
+            if (!isPathInExternalStorage(file.getAbsolutePath()) || "file".equals(type)) {
+                return uri;
+            }
 
             ContentResolver cR = context.getContentResolver();
             if (uri != null && !TextUtils.isEmpty(uri.toString())) {
@@ -44,6 +49,15 @@ public class ShareUtils {
             }
         }
         return uri;
+    }
+
+    public static boolean shouldRequestPermission(String path) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isPathInExternalStorage(path);
+    }
+
+    private static boolean isPathInExternalStorage(String path) {
+        File storagePath = Environment.getExternalStorageDirectory();
+        return path.startsWith(storagePath.getAbsolutePath());
     }
 
     /**
