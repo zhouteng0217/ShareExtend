@@ -81,7 +81,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
                 }
             }
 
-            Uri uri = ShareUtils.getUriForFile(mRegistrar.context(), f, type);
+            Uri uri = ShareUtils.getUriForFile(mRegistrar.activity(), f, type);
 
             if ("image".equals(type)) {
                 shareIntent.setType("image/*");

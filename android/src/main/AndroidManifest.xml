@@ -7,13 +7,13 @@
     <application>
 
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:name="com.zt.shareextend.ShareExtendProvider"
+            android:authorities="${applicationId}.shareextend.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_path" />
+                android:resource="@xml/share_extend_provider_path" />
         </provider>
 
     </application>

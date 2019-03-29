@@ -19,7 +19,7 @@ public class ShareUtils {
     /// get the uri for file
     public static Uri getUriForFile(Context context, File file, String type) {
 
-        String authorities = context.getPackageName() + ".fileprovider";
+        String authorities = context.getPackageName() + ".shareextend.fileprovider";
 
         Uri uri;
         // 低版本直接用 Uri.fromFile

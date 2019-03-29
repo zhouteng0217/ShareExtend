@@ -1,3 +1,6 @@
+## 1.0.7
+* Android端修改了FileProvider的authorities，继承FileProvider，防止FileProvider冲突
+
 ## 1.0.6
 * 修复了android端分享应用沙盒内文件可能出错的bug
 * 优化了android端分享时的权限请求逻辑

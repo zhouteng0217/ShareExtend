@@ -5,7 +5,7 @@
 
 ```
 dependencies:
-  share_extend: "^1.0.6"
+  share_extend: "^1.0.7"
 ```
 ## 导入
 ```
