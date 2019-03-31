@@ -4,9 +4,11 @@ Language: [English](https://github.com/zhouteng0217/ShareExtend/blob/master/READ
 
 [![pub package](https://img.shields.io/pub/v/share_extend.svg)](https://pub.dartlang.org/packages/share_extend)
 
-调用系统分享的Flutter组件，支持分享文本、图片、视频和文件
+A Flutter plugin for iOS and Android for sharing text, image, video and file with system ui. 
 
-## 安装
+## Installation
+
+First, add `share_extend` as a dependency in your pubspec.yaml file.
 
 ```
 dependencies:
@@ -15,41 +17,42 @@ dependencies:
 
 ### iOS
 
-添加下面的key到工程的info.plist文件，路径 ```<project root>/ios/Runner/Info.plist```，用于将分享的图片保存到相册
+Add the following key to your info.plist file, located in `<project root>/ios/Runner/Info.plist` for saving shared images to photo library.
 
 ```
 <key>NSPhotoLibraryAddUsageDescription</key>
-<string>这里填写为什么需要相写入册权限的描述语句</string>
+<string>describe why your app needs access to write photo library</string>
 ```
 
 ### Android
 
-暂无特殊配置
+No configuration required.
 
-## 导入
+## Import
 
 ```
 import 'package:share_extend/share_extend.dart';
 ```
 
-## 使用
+
+## Example
 
 ```
 
-//分享文本
+//share text
 ShareExtend.share("share text", "text");
 
-//分享图片 （例子中使用了一个image_picker的插件来实现图片的选择)
+//share image
 File f =
     await ImagePicker.pickImage(source: ImageSource.gallery);
 ShareExtend.share(f.path, "image");
 
-//分享视频
+//share video
 File f = await ImagePicker.pickVideo(
         source: ImageSource.gallery);
 ShareExtend.share(f.path, "video");
 
-//分享文件
+//share file
 Directory dir = await getApplicationDocumentsDirectory();
 File testFile = new File("${dir.path}/flutter/test.txt");
 if (!await testFile.exists()) {
