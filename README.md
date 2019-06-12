@@ -10,7 +10,7 @@ Language: [English](https://github.com/zhouteng0217/ShareExtend/blob/master/READ
 
 ```
 dependencies:
-  share_extend: "^1.0.8"
+  share_extend: "^1.0.9"
 ```
 
 ### iOS
@@ -24,7 +24,12 @@ dependencies:
 
 ### Android
 
-暂无特殊配置
+如果涉及到要分享存储空间里面的文件，需要用到读写存储空间权限的，请在项目的android模块的下，添加读写权限，路径为 `<project root>/android/app/src/main/AndroidManifest.xml`
+
+```
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+```
 
 ## 导入
 

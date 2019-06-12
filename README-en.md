@@ -12,7 +12,7 @@ First, add `share_extend` as a dependency in your pubspec.yaml file.
 
 ```
 dependencies:
-  share_extend: "^1.0.8"
+  share_extend: "^1.0.9"
 ```
 
 ### iOS
@@ -26,7 +26,12 @@ Add the following key to your info.plist file, located in `<project root>/ios/Ru
 
 ### Android
 
-No configuration required.
+If your project needs read and write permissions for sharing external storage file, please add the following permissions to your AndroidManifest.xml, located in `<project root>/android/app/src/main/AndroidManifest.xml`
+
+```
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+```
 
 ## Import
 

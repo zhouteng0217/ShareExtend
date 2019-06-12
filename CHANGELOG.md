@@ -1,3 +1,6 @@
+## 1.0.9
+* 移除了Android端的内置存储的读写权限，改成由APP端来按需求配置
+
 ## 1.0.7
 * Android端修改了FileProvider的authorities，继承FileProvider，防止FileProvider冲突
 
