@@ -39,7 +39,9 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () async {
                     File f = await ImagePicker.pickImage(
                         source: ImageSource.gallery);
-                    ShareExtend.share(f.path, "image");
+                    if (f != null) {
+                      ShareExtend.share(f.path, "image");
+                    }
                   },
                   child: new Text("share image"),
                 ),
@@ -47,7 +49,9 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () async {
                     File f = await ImagePicker.pickVideo(
                         source: ImageSource.gallery);
-                    ShareExtend.share(f.path, "video");
+                    if (f != null) {
+                      ShareExtend.share(f.path, "video");
+                    }
                   },
                   child: new Text("share video"),
                 ),
