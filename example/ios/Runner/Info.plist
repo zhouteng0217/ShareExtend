@@ -43,5 +43,7 @@
 	<false/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
     <string>App needs photo library permission for saving images</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Used to demonstrate image picker plugin</string>
 </dict>
 </plist>
