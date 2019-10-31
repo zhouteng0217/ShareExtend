@@ -30,7 +30,6 @@ class _MyAppState extends State<MyApp> {
         body: Container(
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 RaisedButton(
                   onPressed: () {

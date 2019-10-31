@@ -10,12 +10,12 @@
     [shareChannel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
         if ([@"share" isEqualToString:call.method]) {
             NSDictionary *arguments = [call arguments];
-            NSString *shareText = arguments[@"text"];
+            NSArray *array = arguments[@"list"];
             NSString *shareType = arguments[@"type"];
             
-            if (shareText.length == 0) {
+            if (array.count == 0) {
                 result(
-                       [FlutterError errorWithCode:@"error" message:@"Non-empty text expected" details:nil]);
+                       [FlutterError errorWithCode:@"error" message:@"Non-empty list expected" details:nil]);
                 return;
             }
             
@@ -31,14 +31,22 @@
             }
         
             if ([shareType isEqualToString:@"text"]) {
-                [self share:shareText atSource:originRect];
+                [self share:array atSource:originRect];
                 result(nil);
             }  else if ([shareType isEqualToString:@"image"]) {
-                UIImage *image = [UIImage imageWithContentsOfFile:shareText];
-                [self share:image atSource:originRect];
+                NSMutableArray * imageArray = [[NSMutableArray alloc] init];
+                for (NSString * path in array) {
+                    UIImage *image = [UIImage imageWithContentsOfFile:path];
+                    [imageArray addObject:image];
+                }
+                [self share:imageArray atSource:originRect];
             } else {
-                NSURL *url = [NSURL fileURLWithPath:shareText];
-                [self share:url atSource:originRect];
+                NSMutableArray * urlArray = [[NSMutableArray alloc] init];
+                for (NSString * path in array) {
+                    NSURL *url = [NSURL fileURLWithPath:path];
+                    [urlArray addObject:url];
+                }
+                [self share:urlArray atSource:originRect];
                 result(nil);
             }
         } else {
@@ -47,8 +55,8 @@
     }];
 }
 
-+ (void)share:(id)sharedItems atSource:(CGRect)origin {
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sharedItems] applicationActivities:nil];
++ (void)share:(NSArray *)sharedItems atSource:(CGRect)origin {
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:sharedItems applicationActivities:nil];
     
     UIViewController *controller =[UIApplication sharedApplication].keyWindow.rootViewController;
     
