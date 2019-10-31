@@ -4,7 +4,7 @@
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel* shareChannel = [FlutterMethodChannel
-                                          methodChannelWithName:@"share_extend"
+                                          methodChannelWithName:@"com.zt.shareextend/share_extend"
                                           binaryMessenger:[registrar messenger]];
     
     [shareChannel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {

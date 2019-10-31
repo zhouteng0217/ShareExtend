@@ -4,13 +4,15 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry;
@@ -23,10 +25,10 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
 
     /// the authorities for FileProvider
     private static final int CODE_ASK_PERMISSION = 100;
-    private static final String CHANNEL = "share_extend";
+    private static final String CHANNEL = "com.zt.shareextend/share_extend";
 
     private final Registrar mRegistrar;
-    private String text;
+    private List<String> list;
     private String type;
 
     public static void registerWith(Registrar registrar) {
@@ -48,40 +50,41 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
                 throw new IllegalArgumentException("Map argument expected");
             }
             // Android does not support showing the share sheet at a particular point on screen.
-            share((String) call.argument("text"), (String) call.argument("type"));
+            share((List) call.argument("list"), (String) call.argument("type"));
             result.success(null);
         } else {
             result.notImplemented();
         }
     }
 
-    private void share(String text, String type) {
-        if (text == null || text.isEmpty()) {
-            throw new IllegalArgumentException("Non-empty text expected");
+    private void share(List<String> list, String type) {
+        if (list == null || list.isEmpty()) {
+            throw new IllegalArgumentException("Non-empty list expected");
         }
-        this.text = text;
+        this.list = list;
         this.type = type;
 
         Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         if ("text".equals(type)) {
-            shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, list.get(0));
             shareIntent.setType("text/plain");
         } else {
-            File f = new File(text);
-            if (!f.exists()) {
-                throw new IllegalArgumentException("file not exists");
-            }
-
-            if (ShareUtils.shouldRequestPermission(text)) {
-                if (!checkPermisson()) {
+            if (ShareUtils.shouldRequestPermission(list)) {
+                if (!checkPermission()) {
                     requestPermission();
                     return;
                 }
             }
 
-            Uri uri = ShareUtils.getUriForFile(mRegistrar.activity(), f, type);
+            ArrayList<Uri> uriList = new ArrayList<>();
+            for (String path : list) {
+                File f = new File(path);
+                Uri uri = ShareUtils.getUriForFile(mRegistrar.activity(), f, type);
+                uriList.add(uri);
+            }
 
             if ("image".equals(type)) {
                 shareIntent.setType("image/*");
@@ -90,9 +93,18 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             } else {
                 shareIntent.setType("application/*");
             }
-            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            if (uriList.size() == 1) {
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uriList.get(0));
+            } else {
+                shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
+            }
         }
+        startChooserActivity(shareIntent);
+    }
 
+    private void startChooserActivity(Intent shareIntent) {
         Intent chooserIntent = Intent.createChooser(shareIntent, null /* dialog title optional */);
         if (mRegistrar.activity() != null) {
             mRegistrar.activity().startActivity(chooserIntent);
@@ -102,12 +114,9 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
         }
     }
 
-    private boolean checkPermisson() {
-        if (ContextCompat.checkSelfPermission(mRegistrar.context(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        return false;
+    private boolean checkPermission() {
+        return ContextCompat.checkSelfPermission(mRegistrar.context(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission() {
@@ -117,7 +126,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
     @Override
     public boolean onRequestPermissionsResult(int requestCode, String[] perms, int[] grantResults) {
         if (requestCode == CODE_ASK_PERMISSION && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            share(text, type);
+            share(list, type);
         }
         return false;
     }

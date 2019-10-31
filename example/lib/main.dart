@@ -1,15 +1,17 @@
-import 'package:flutter/material.dart';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 
 import 'package:share_extend/share_extend.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => new _MyAppState();
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -20,22 +22,23 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
         body: Container(
-          child: new Center(
-            child: new Column(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new RaisedButton(
+                RaisedButton(
                   onPressed: () {
                     ShareExtend.share("share text", "text");
                   },
-                  child: new Text("share text"),
+                  child: Text("share text"),
                 ),
-                new RaisedButton(
+                RaisedButton(
                   onPressed: () async {
                     File f = await ImagePicker.pickImage(
                         source: ImageSource.gallery);
@@ -43,9 +46,9 @@ class _MyAppState extends State<MyApp> {
                       ShareExtend.share(f.path, "image");
                     }
                   },
-                  child: new Text("share image"),
+                  child: Text("share image"),
                 ),
-                new RaisedButton(
+                RaisedButton(
                   onPressed: () async {
                     File f = await ImagePicker.pickVideo(
                         source: ImageSource.gallery);
@@ -53,13 +56,19 @@ class _MyAppState extends State<MyApp> {
                       ShareExtend.share(f.path, "video");
                     }
                   },
-                  child: new Text("share video"),
+                  child: Text("share video"),
                 ),
-                new RaisedButton(
+                RaisedButton(
                   onPressed: () {
                     _shareApplicationDocumentsFile();
                   },
-                  child: new Text("share file"),
+                  child: Text("share file"),
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    _shareMultipleImages();
+                  },
+                  child: Text("share multiple images"),
                 ),
               ],
             ),
@@ -69,10 +78,20 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  ///share multiple images
+  _shareMultipleImages() async {
+    List<Asset> assetList = await MultiImagePicker.pickImages(maxImages: 5);
+    var imageList = List<String>();
+    for (var asset in assetList) {
+      imageList.add(await asset.filePath);
+    }
+    ShareExtend.shareMultiple(imageList, "image");
+  }
+
   ///share the documents file
   _shareApplicationDocumentsFile() async {
     Directory dir = await getApplicationDocumentsDirectory();
-    File testFile = new File("${dir.path}/flutter/test.txt");
+    File testFile = File("${dir.path}/flutter/test.txt");
     if (!await testFile.exists()) {
       await testFile.create(recursive: true);
       testFile.writeAsStringSync("test for share documents file");
