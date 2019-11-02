@@ -12,7 +12,7 @@ First, add `share_extend` as a dependency in your pubspec.yaml file.
 
 ```
 dependencies:
-  share_extend: "^1.0.9"
+  share_extend: "^1.1.0"
 ```
 
 ### iOS
@@ -64,6 +64,16 @@ if (!await testFile.exists()) {
   await testFile.create(recursive: true);
   testFile.writeAsStringSync("test for share documents file");
 }
-ShareExtend.share(testFile.path, "file"); 
+ShareExtend.share(testFile.path, "file");
+
+///share multiple images
+_shareMultipleImages() async {
+  List<Asset> assetList = await MultiImagePicker.pickImages(maxImages: 5);
+  var imageList = List<String>();
+  for (var asset in assetList) {
+    imageList.add(await asset.filePath);
+  }
+  ShareExtend.shareMultiple(imageList, "image");
+}
 
 ```
