@@ -11,13 +11,14 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import java.io.File;
+import java.util.List;
 
 import androidx.core.content.FileProvider;
 
 public class ShareUtils {
 
     /// get the uri for file
-    public static Uri getUriForFile(Context context, File file, String type) {
+    static Uri getUriForFile(Context context, File file, String type) {
 
         String authorities = context.getPackageName() + ".shareextend.fileprovider";
 
@@ -51,7 +52,16 @@ public class ShareUtils {
         return uri;
     }
 
-    public static boolean shouldRequestPermission(String path) {
+    static boolean shouldRequestPermission(List<String> pathList) {
+        for (String path : pathList) {
+            if (shouldRequestPermission(path)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static boolean shouldRequestPermission(String path) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isPathInExternalStorage(path);
     }
 
@@ -121,7 +131,7 @@ public class ShareUtils {
      * @param audioFile
      * @return content Uri
      */
-    public static Uri getAudioContentUri(Context context, File audioFile) {
+    private static Uri getAudioContentUri(Context context, File audioFile) {
         String filePath = audioFile.getAbsolutePath();
         Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Media._ID}, MediaStore.Audio.Media.DATA + "=? ",
