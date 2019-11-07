@@ -19,7 +19,7 @@ dependencies:
 
 ```
 <key>NSPhotoLibraryAddUsageDescription</key>
-<string>这里填写为什么需要相写入册权限的描述语句</string>
+<string>这里填写为什么需要相册写入权限的描述语句</string>
 ```
 
 ### Android
