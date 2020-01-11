@@ -74,3 +74,6 @@ pubspec.lock
 .atom/
 .idea/
 .vscode/
+.flutter-plugins-dependencies
+.dart_tool
+flutter_export_environment.sh

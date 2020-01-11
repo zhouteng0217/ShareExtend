@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 import 'package:share_extend/share_extend.dart';
@@ -82,9 +84,20 @@ class _MyAppState extends State<MyApp> {
     List<Asset> assetList = await MultiImagePicker.pickImages(maxImages: 5);
     var imageList = List<String>();
     for (var asset in assetList) {
-      imageList.add(await asset.filePath);
+      String path =
+          await _writeByteToImageFile(await asset.getByteData(quality: 30));
+      imageList.add(path);
     }
     ShareExtend.shareMultiple(imageList, "image");
+  }
+
+  Future<String> _writeByteToImageFile(ByteData byteData) async {
+    Directory dir = await getApplicationDocumentsDirectory();
+    File imageFile = new File(
+        "${dir.path}/flutter/${DateTime.now().millisecondsSinceEpoch}.png");
+    imageFile.createSync(recursive: true);
+    imageFile.writeAsBytesSync(byteData.buffer.asUint8List(0));
+    return imageFile.path;
   }
 
   ///share the documents file

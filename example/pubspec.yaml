@@ -20,13 +20,13 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   path_provider: ^1.4.0
-  multi_image_picker: ^4.5.9
-  #  image_picker: ^0.6.1+10
-  image_picker:
-    git:
-      url: git@github.com:miguelpruivo/plugins.git
-      path: packages/image_picker
-      ref: image_picker-Fix-#41046
+  multi_image_picker: ^4.6.1
+  image_picker: ^0.6.3
+#  image_picker:
+#    git:
+#      url: git@github.com:miguelpruivo/plugins.git
+#      path: packages/image_picker
+#      ref: image_picker-Fix-#41046
 
 dev_dependencies:
   flutter_test:
