@@ -1,3 +1,8 @@
+## 1.1.1
+* add option param "share panel title" on android
+* add option param "subject" on both android and ios
+* update sample code with latest image_picker plugin version that fixed video picker bugs
+
 ## 1.1.0
 * 添加多图，多文件分享功能
 * 合并image_picker在ios13中选取视频不可用的补丁

@@ -12,7 +12,7 @@ First, add `share_extend` as a dependency in your pubspec.yaml file.
 
 ```
 dependencies:
-  share_extend: "^1.1.0"
+  share_extend: "^1.1.1"
 ```
 
 ### iOS
@@ -45,7 +45,7 @@ import 'package:share_extend/share_extend.dart';
 ```
 
 //share text
-ShareExtend.share("share text", "text");
+ShareExtend.share("share text", "text","android share panel title","share subject");
 
 //share image
 File f =
@@ -71,9 +71,20 @@ _shareMultipleImages() async {
   List<Asset> assetList = await MultiImagePicker.pickImages(maxImages: 5);
   var imageList = List<String>();
   for (var asset in assetList) {
-    imageList.add(await asset.filePath);
+    String path =
+        await _writeByteToImageFile(await asset.getByteData(quality: 30));
+    imageList.add(path);
   }
   ShareExtend.shareMultiple(imageList, "image");
+}
+
+Future<String> _writeByteToImageFile(ByteData byteData) async {
+  Directory dir = await getApplicationDocumentsDirectory();
+  File imageFile = new File(
+      "${dir.path}/flutter/${DateTime.now().millisecondsSinceEpoch}.png");
+  imageFile.createSync(recursive: true);
+  imageFile.writeAsBytesSync(byteData.buffer.asUint8List(0));
+  return imageFile.path;
 }
 
 ```

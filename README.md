@@ -10,7 +10,7 @@ Language: [English](https://github.com/zhouteng0217/ShareExtend/blob/master/READ
 
 ```
 dependencies:
-  share_extend: "^1.1.0"
+  share_extend: "^1.1.1"
 ```
 
 ### iOS
@@ -42,7 +42,7 @@ import 'package:share_extend/share_extend.dart';
 ```
 
 //分享文本
-ShareExtend.share("share text", "text");
+ShareExtend.share("share text", "text","android share panel title","share subject");
 
 //分享图片 （例子中使用了一个image_picker的插件来实现图片的选择)
 File f =
@@ -63,14 +63,25 @@ if (!await testFile.exists()) {
 }
 ShareExtend.share(testFile.path, "file");
 
-///分享多图
+//分享多图(借助了MultiImagePicker来多选获取图片图片，由于该库没有提供文件路径，因此demo里面先将图片保存为图片再调用分享)
 _shareMultipleImages() async {
   List<Asset> assetList = await MultiImagePicker.pickImages(maxImages: 5);
   var imageList = List<String>();
   for (var asset in assetList) {
-    imageList.add(await asset.filePath);
+    String path =
+        await _writeByteToImageFile(await asset.getByteData(quality: 30));
+    imageList.add(path);
   }
   ShareExtend.shareMultiple(imageList, "image");
+}
+
+Future<String> _writeByteToImageFile(ByteData byteData) async {
+  Directory dir = await getApplicationDocumentsDirectory();
+  File imageFile = new File(
+      "${dir.path}/flutter/${DateTime.now().millisecondsSinceEpoch}.png");
+  imageFile.createSync(recursive: true);
+  imageFile.writeAsBytesSync(byteData.buffer.asUint8List(0));
+  return imageFile.path;
 }
 
 ```
