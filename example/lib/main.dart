@@ -35,7 +35,9 @@ class _MyAppState extends State<MyApp> {
               children: <Widget>[
                 RaisedButton(
                   onPressed: () {
-                    ShareExtend.share("share text", "text");
+                    ShareExtend.share("share text", "text",
+                        sharePanelTitle: "share text title",
+                        subject: "share text subject");
                   },
                   child: Text("share text"),
                 ),
@@ -44,7 +46,9 @@ class _MyAppState extends State<MyApp> {
                     File f = await ImagePicker.pickImage(
                         source: ImageSource.gallery);
                     if (f != null) {
-                      ShareExtend.share(f.path, "image");
+                      ShareExtend.share(f.path, "image",
+                          sharePanelTitle: "share image title",
+                          subject: "share image subject");
                     }
                   },
                   child: Text("share image"),

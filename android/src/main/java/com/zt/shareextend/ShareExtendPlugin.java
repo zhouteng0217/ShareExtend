@@ -30,6 +30,8 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
     private final Registrar mRegistrar;
     private List<String> list;
     private String type;
+    private String sharePanelTitle;
+    private String subject;
 
     public static void registerWith(Registrar registrar) {
         MethodChannel channel = new MethodChannel(registrar.messenger(), CHANNEL);
@@ -50,22 +52,24 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
                 throw new IllegalArgumentException("Map argument expected");
             }
             // Android does not support showing the share sheet at a particular point on screen.
-            share((List) call.argument("list"), (String) call.argument("type"));
+            list = call.argument("list");
+            type = call.argument("type");
+            sharePanelTitle = call.argument("sharePanelTitle");
+            subject = call.argument("subject");
+            share(list, type, sharePanelTitle, subject);
             result.success(null);
         } else {
             result.notImplemented();
         }
     }
 
-    private void share(List<String> list, String type) {
+    private void share(List<String> list, String type, String sharePanelTitle, String subject) {
         if (list == null || list.isEmpty()) {
             throw new IllegalArgumentException("Non-empty list expected");
         }
-        this.list = list;
-        this.type = type;
-
         Intent shareIntent = new Intent();
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 
         if ("text".equals(type)) {
             shareIntent.setAction(Intent.ACTION_SEND);
@@ -101,11 +105,11 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
                 shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
             }
         }
-        startChooserActivity(shareIntent);
+        startChooserActivity(shareIntent, sharePanelTitle);
     }
 
-    private void startChooserActivity(Intent shareIntent) {
-        Intent chooserIntent = Intent.createChooser(shareIntent, null /* dialog title optional */);
+    private void startChooserActivity(Intent shareIntent,String sharePanelTitle) {
+        Intent chooserIntent = Intent.createChooser(shareIntent, sharePanelTitle /* dialog subject optional */);
         if (mRegistrar.activity() != null) {
             mRegistrar.activity().startActivity(chooserIntent);
         } else {
@@ -126,7 +130,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
     @Override
     public boolean onRequestPermissionsResult(int requestCode, String[] perms, int[] grantResults) {
         if (requestCode == CODE_ASK_PERMISSION && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            share(list, type);
+            share(list, type, sharePanelTitle, subject);
         }
         return false;
     }

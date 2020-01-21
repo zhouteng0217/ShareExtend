@@ -21,11 +21,14 @@ class ShareExtend {
   }
 
   static Future<void> share(String text, String type,
-      {Rect sharePositionOrigin}) {
+      {Rect sharePositionOrigin, String sharePanelTitle, String subject = ""}) {
     assert(text != null);
     assert(text.isNotEmpty);
     List<String> list = [text];
-    return _shareInner(list, type, sharePositionOrigin: sharePositionOrigin);
+    return _shareInner(list, type,
+        sharePositionOrigin: sharePositionOrigin,
+        sharePanelTitle: sharePanelTitle,
+        subject: subject);
   }
 
   /// method to share with system ui
@@ -36,11 +39,13 @@ class ShareExtend {
   /// [sharePositionOrigin] only supports ios
   ///
   static Future<void> _shareInner(List<String> list, String type,
-      {Rect sharePositionOrigin}) {
+      {Rect sharePositionOrigin, String sharePanelTitle, String subject}) {
     assert(list != null && list.isNotEmpty);
     final Map<String, dynamic> params = <String, dynamic>{
       'list': list,
-      'type': type
+      'type': type,
+      'sharePanelTitle': sharePanelTitle,
+      'subject': subject
     };
     if (sharePositionOrigin != null) {
       params['originX'] = sharePositionOrigin.left;

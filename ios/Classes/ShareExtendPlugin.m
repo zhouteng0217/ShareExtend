@@ -12,6 +12,7 @@
             NSDictionary *arguments = [call arguments];
             NSArray *array = arguments[@"list"];
             NSString *shareType = arguments[@"type"];
+            NSString *subject = arguments[@"subject"];
             
             if (array.count == 0) {
                 result(
@@ -31,7 +32,7 @@
             }
         
             if ([shareType isEqualToString:@"text"]) {
-                [self share:array atSource:originRect];
+                [self share:array atSource:originRect withSubject:subject];
                 result(nil);
             }  else if ([shareType isEqualToString:@"image"]) {
                 NSMutableArray * imageArray = [[NSMutableArray alloc] init];
@@ -39,14 +40,14 @@
                     UIImage *image = [UIImage imageWithContentsOfFile:path];
                     [imageArray addObject:image];
                 }
-                [self share:imageArray atSource:originRect];
+                [self share:imageArray atSource:originRect withSubject:subject];
             } else {
                 NSMutableArray * urlArray = [[NSMutableArray alloc] init];
                 for (NSString * path in array) {
                     NSURL *url = [NSURL fileURLWithPath:path];
                     [urlArray addObject:url];
                 }
-                [self share:urlArray atSource:originRect];
+                [self share:urlArray atSource:originRect withSubject:subject];
                 result(nil);
             }
         } else {
@@ -55,7 +56,7 @@
     }];
 }
 
-+ (void)share:(NSArray *)sharedItems atSource:(CGRect)origin {
++ (void)share:(NSArray *)sharedItems atSource:(CGRect)origin withSubject:(NSString *) subject {
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:sharedItems applicationActivities:nil];
     
     UIViewController *controller =[UIApplication sharedApplication].keyWindow.rootViewController;
@@ -64,6 +65,7 @@
     if (!CGRectIsEmpty(origin)) {
         activityViewController.popoverPresentationController.sourceRect = origin;
     }
+    [activityViewController setValue:subject forKey:@"subject"];
     [controller presentViewController:activityViewController animated:YES completion:nil];
 }
 
