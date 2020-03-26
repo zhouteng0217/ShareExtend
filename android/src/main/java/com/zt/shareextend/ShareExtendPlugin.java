@@ -3,6 +3,7 @@ package com.zt.shareextend;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 
 import java.io.File;
@@ -71,6 +72,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 
+        ArrayList<Uri> uriList = new ArrayList<>();
         if ("text".equals(type)) {
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_TEXT, list.get(0));
@@ -83,7 +85,6 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
                 }
             }
 
-            ArrayList<Uri> uriList = new ArrayList<>();
             for (String path : list) {
                 File f = new File(path);
                 Uri uri = ShareUtils.getUriForFile(mRegistrar.activity(), f);
@@ -105,12 +106,17 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
                 shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
             }
         }
-        startChooserActivity(shareIntent, sharePanelTitle);
+        startChooserActivity(uriList.get(0), shareIntent, sharePanelTitle);
     }
 
-    private void startChooserActivity(Intent shareIntent,String sharePanelTitle) {
+    private void startChooserActivity(Uri uri, Intent shareIntent,String sharePanelTitle) {
         Intent chooserIntent = Intent.createChooser(shareIntent, sharePanelTitle /* dialog subject optional */);
         if (mRegistrar.activity() != null) {
+            List<ResolveInfo> resInfoList = mRegistrar.activity().getPackageManager().queryIntentActivities(chooserIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                mRegistrar.activity().grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
             mRegistrar.activity().startActivity(chooserIntent);
         } else {
             chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
