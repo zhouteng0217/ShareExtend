@@ -86,7 +86,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             ArrayList<Uri> uriList = new ArrayList<>();
             for (String path : list) {
                 File f = new File(path);
-                Uri uri = ShareUtils.getUriForFile(mRegistrar.activity(), f, type);
+                Uri uri = ShareUtils.getUriForFile(mRegistrar.activity(), f);
                 uriList.add(uri);
             }
 
