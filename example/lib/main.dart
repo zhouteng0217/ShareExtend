@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 RaisedButton(
                   onPressed: () {
-                    _shareApplicationDocumentsFile();
+                    _shareStorageFile();
                   },
                   child: Text("share file"),
                 ),
@@ -106,9 +106,11 @@ class _MyAppState extends State<MyApp> {
     return imageFile.path;
   }
 
-  ///share the documents file
-  _shareApplicationDocumentsFile() async {
-    Directory dir = await getApplicationDocumentsDirectory();
+  ///share the storage file
+  _shareStorageFile() async {
+    Directory dir = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
     File testFile = File("${dir.path}/flutter/test.txt");
     if (!await testFile.exists()) {
       await testFile.create(recursive: true);

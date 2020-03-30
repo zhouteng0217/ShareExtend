@@ -58,7 +58,9 @@ File f = await ImagePicker.pickVideo(
 ShareExtend.share(f.path, "video");
 
 //share file
-Directory dir = await getApplicationDocumentsDirectory();
+Directory dir = Platform.isAndroid
+    ? await getExternalStorageDirectory()
+    : await getApplicationDocumentsDirectory();
 File testFile = new File("${dir.path}/flutter/test.txt");
 if (!await testFile.exists()) {
   await testFile.create(recursive: true);
