@@ -1,3 +1,7 @@
+## 1.1.2
+* rebuild the provider code on android platform
+* update sample code
+
 ## 1.1.1
 * add option param "share panel title" on android
 * add option param "subject" on both android and ios

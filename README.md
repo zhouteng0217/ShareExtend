@@ -10,7 +10,7 @@ Language: [English](https://github.com/zhouteng0217/ShareExtend/blob/master/READ
 
 ```
 dependencies:
-  share_extend: "^1.1.1"
+  share_extend: "^1.1.2"
 ```
 
 ### iOS
@@ -76,7 +76,9 @@ _shareMultipleImages() async {
 }
 
 Future<String> _writeByteToImageFile(ByteData byteData) async {
-  Directory dir = await getApplicationDocumentsDirectory();
+  Directory dir = Platform.isAndroid
+      ? await getExternalStorageDirectory()
+      : await getApplicationDocumentsDirectory();
   File imageFile = new File(
       "${dir.path}/flutter/${DateTime.now().millisecondsSinceEpoch}.png");
   imageFile.createSync(recursive: true);
