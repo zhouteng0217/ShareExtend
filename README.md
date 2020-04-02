@@ -10,7 +10,7 @@ Language: [English](https://github.com/zhouteng0217/ShareExtend/blob/master/READ
 
 ```
 dependencies:
-  share_extend: "^1.1.2"
+  share_extend: "^1.1.3"
 ```
 
 ### iOS
@@ -74,7 +74,7 @@ _shareMultipleImages() async {
         await _writeByteToImageFile(await asset.getByteData(quality: 30));
     imageList.add(path);
   }
-  ShareExtend.shareMultiple(imageList, "image");
+  ShareExtend.shareMultiple(imageList, "image",subject: "share muti image");
 }
 
 Future<String> _writeByteToImageFile(ByteData byteData) async {

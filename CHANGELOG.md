@@ -1,3 +1,6 @@
+## 1.1.3
+* add option subject for sharing multiple images
+
 ## 1.1.2
 * rebuild the provider code on android platform
 * update sample code
