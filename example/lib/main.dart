@@ -92,7 +92,7 @@ class _MyAppState extends State<MyApp> {
           await _writeByteToImageFile(await asset.getByteData(quality: 30));
       imageList.add(path);
     }
-    ShareExtend.shareMultiple(imageList, "image");
+    ShareExtend.shareMultiple(imageList, "image", subject: "share muti image");
   }
 
   Future<String> _writeByteToImageFile(ByteData byteData) async {

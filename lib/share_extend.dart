@@ -14,10 +14,16 @@ class ShareExtend {
   static const MethodChannel _channel =
       const MethodChannel('com.zt.shareextend/share_extend');
 
+  ///
+  /// [sharePositionOrigin] only supports ios
+  ///
   static Future<void> shareMultiple(List<String> list, String type,
-      {Rect sharePositionOrigin}) {
+      {Rect sharePositionOrigin, String sharePanelTitle, String subject}) {
     assert(list != null && list.isNotEmpty);
-    return _shareInner(list, type, sharePositionOrigin: sharePositionOrigin);
+    return _shareInner(list, type,
+        sharePositionOrigin: sharePositionOrigin,
+        subject: subject,
+        sharePanelTitle: sharePanelTitle);
   }
 
   static Future<void> share(String text, String type,
