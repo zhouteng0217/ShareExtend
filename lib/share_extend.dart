@@ -37,6 +37,21 @@ class ShareExtend {
         subject: subject);
   }
 
+  /// method to share to Instagram
+  /// It uses the ACTION_SEND Intent on Android and UIActivityViewController
+  /// on iOS.
+  /// [list] can be text or path list
+  /// [type]  "image" ,"video"
+  /// ANDROID only at the moment
+  static Future<void> shareToInstagram(List<String> list, String type) {
+    assert(list != null && list.isNotEmpty);
+    final Map<String, dynamic> params = <String, dynamic>{
+      'list': list,
+      'type': type,
+    };
+    return _channel.invokeMethod('shareToInstagram', params);
+  }
+
   /// method to share with system ui
   ///  It uses the ACTION_SEND Intent on Android and UIActivityViewController
   /// on iOS.

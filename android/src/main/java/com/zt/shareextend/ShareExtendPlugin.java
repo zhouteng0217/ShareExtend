@@ -27,6 +27,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
     /// the authorities for FileProvider
     private static final int CODE_ASK_PERMISSION = 100;
     private static final String CHANNEL = "com.zt.shareextend/share_extend";
+    private static final String INSTAGRAM_PACKAGE_NAME = "com.instagram.android";
 
     private final Registrar mRegistrar;
     private List<String> list;
@@ -58,6 +59,10 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             sharePanelTitle = call.argument("sharePanelTitle");
             subject = call.argument("subject");
             share(list, type, sharePanelTitle, subject);
+            result.success(null);
+        } else if (call.method.equals("shareToInstagram")) {
+            type = call.argument("type");
+            shareToInstagram(list, type);
             result.success(null);
         } else {
             result.notImplemented();
@@ -139,5 +144,70 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             share(list, type, sharePanelTitle, subject);
         }
         return false;
+    }
+
+    private void openInstagramInPlayStore() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setData(Uri.parse("market://details?id="+ INSTAGRAM_PACKAGE_NAME));
+        mRegistrar.context().startActivity(intent);
+    }
+
+
+    private boolean instagramInstalled() {
+        boolean installed = false;
+
+        try {
+            mRegistrar.context()
+                    .getPackageManager()
+                    .getApplicationInfo(INSTAGRAM_PACKAGE_NAME, 0);
+
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    private void shareToInstagram(List<String> list, String type) {
+        String mediaType = "";
+        if ("image".equals(type)) {
+            mediaType = "image/jpeg";
+        } else {
+            mediaType = "video/*";
+        }
+
+        if (ShareUtils.shouldRequestPermission(list)) {
+            if (!checkPermission()) {
+                requestPermission();
+                return;
+            }
+        }
+
+        for (String path : list) {
+            File f = new File(path);
+            Uri uri = ShareUtils.getUriForFile(mRegistrar.activity(), f);
+            uriList.add(uri);
+        }
+
+
+        if (instagramInstalled()) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.setPackage(INSTAGRAM_PACKAGE_NAME);
+            shareIntent.setType(mediaType);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, (uriList[0]));
+            shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            try {
+                mRegistrar.context().startActivity(shareIntent);
+            } catch (ActivityNotFoundException ex) {
+                openInstagramInPlayStore();
+            }
+        } else {
+            openInstagramInPlayStore();
+        }
     }
 }
