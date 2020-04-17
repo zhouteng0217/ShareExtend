@@ -1,6 +1,9 @@
 package com.zt.shareextend;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -26,6 +29,14 @@ class ShareUtils {
         return uri;
     }
 
+    static void grantUriPermission(Context context, List<Uri> uriList, Intent intent) {
+        for (Uri uri : uriList) {
+            List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resolveInfos) {
+                context.grantUriPermission(resolveInfo.activityInfo.packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+        }
+    }
 
     static boolean shouldRequestPermission(List<String> pathList) {
         for (String path : pathList) {
