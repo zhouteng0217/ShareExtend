@@ -1,3 +1,6 @@
+## 1.1.4
+* add grant uri permission on Android
+
 ## 1.1.3
 * add option subject for sharing multiple images
 
