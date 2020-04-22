@@ -1,3 +1,6 @@
+## 1.1.5
+* fix provider issues for api < 24
+
 ## 1.1.4
 * add grant uri permission on Android
 
