@@ -108,15 +108,17 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             }
             ShareUtils.grantUriPermission(getContext(), uriList, shareIntent);
         }
-        startChooserActivity(shareIntent, sharePanelTitle);
+        startChooserActivity(shareIntent, sharePanelTitle, uriList);
     }
 
     private Context getContext() {
         return mRegistrar.activity() != null ? mRegistrar.activity() : mRegistrar.context();
     }
 
-    private void startChooserActivity(Intent shareIntent, String sharePanelTitle) {
+    private void startChooserActivity(Intent shareIntent, String sharePanelTitle, ArrayList<Uri> uriList) {
         Intent chooserIntent = Intent.createChooser(shareIntent, sharePanelTitle);
+        ShareUtils.grantUriPermission(getContext(), uriList, chooserIntent);
+
         if (mRegistrar.activity() != null) {
             mRegistrar.activity().startActivity(chooserIntent);
         } else {
