@@ -66,7 +66,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
     }
 
     private void share(List<String> list, String type, String sharePanelTitle, String subject) {
-        ArrayList<Uri> uriList;
+        ArrayList<Uri> uriList = new ArrayList<>();;
 
         if (list == null || list.isEmpty()) {
             throw new IllegalArgumentException("Non-empty list expected");
@@ -87,7 +87,6 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
                 }
             }
 
-            uriList = new ArrayList<>();
             for (String path : list) {
                 File f = new File(path);
                 Uri uri = ShareUtils.getUriForFile(getContext(), f);
@@ -119,11 +118,8 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
 
     private void startChooserActivity(Intent shareIntent, String sharePanelTitle, ArrayList<Uri> uriList) {
         Intent chooserIntent = Intent.createChooser(shareIntent, sharePanelTitle);
-
-        if (uriList != null) {
-          ShareUtils.grantUriPermission(getContext(), uriList, chooserIntent);
-        }
-
+        ShareUtils.grantUriPermission(getContext(), uriList, chooserIntent);
+ 
         if (mRegistrar.activity() != null) {
             mRegistrar.activity().startActivity(chooserIntent);
         } else {
