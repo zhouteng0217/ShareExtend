@@ -107,7 +107,6 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
                 shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
                 shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
             }
-            ShareUtils.grantUriPermission(getContext(), uriList, shareIntent);
         }
         startChooserActivity(shareIntent, sharePanelTitle, uriList);
     }
