@@ -1,3 +1,7 @@
+## 1.1.6
+* fix some permission issues on some devices.
+* update lower bound dart dependency to 2.0.0.
+
 ## 1.1.5
 * fix provider issues for api < 24
 
