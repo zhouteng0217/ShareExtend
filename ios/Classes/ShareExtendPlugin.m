@@ -25,7 +25,7 @@
             NSNumber *originWidth = arguments[@"originWidth"];
             NSNumber *originHeight = arguments[@"originHeight"];
             
-            CGRect originRect;
+            CGRect originRect = CGRectZero;
             if (originX != nil && originY != nil && originWidth != nil && originHeight != nil) {
                 originRect = CGRectMake([originX doubleValue], [originY doubleValue],
                                         [originWidth doubleValue], [originHeight doubleValue]);
@@ -60,12 +60,15 @@
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:sharedItems applicationActivities:nil];
     
     UIViewController *controller =[UIApplication sharedApplication].keyWindow.rootViewController;
-    
     activityViewController.popoverPresentationController.sourceView = controller.view;
-    if (!CGRectIsEmpty(origin)) {
-        activityViewController.popoverPresentationController.sourceRect = origin;
+
+    if (CGRectIsEmpty(origin)) {
+        origin = CGRectMake(0, 0, controller.view.bounds.size.width, controller.view.bounds.size.width /2);
     }
+    activityViewController.popoverPresentationController.sourceRect = origin;
+
     [activityViewController setValue:subject forKey:@"subject"];
+
     [controller presentViewController:activityViewController animated:YES completion:nil];
 }
 
