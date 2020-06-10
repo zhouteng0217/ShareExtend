@@ -1,3 +1,6 @@
+## 1.1.7
+* set default popover point on the ipad
+
 ## 1.1.6
 * fix some permission issues on some devices.
 * update lower bound dart dependency to 2.0.0.

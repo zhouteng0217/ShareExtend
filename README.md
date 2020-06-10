@@ -10,7 +10,7 @@ Language: [English](https://github.com/zhouteng0217/ShareExtend/blob/master/READ
 
 ```
 dependencies:
-  share_extend: "^1.1.6"
+  share_extend: "^1.1.7"
 ```
 
 ### iOS
