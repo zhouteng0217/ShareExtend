@@ -100,6 +100,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             } else {
                 shareIntent.setType("application/*");
             }
+            shareIntent.putExtra(Intent.EXTRA_TEXT, type);
             if (uriList.size() == 1) {
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_STREAM, uriList.get(0));
