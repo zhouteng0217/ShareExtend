@@ -34,6 +34,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
     private String type;
     private String sharePanelTitle;
     private String subject;
+    private String extraText;
 
     public static void registerWith(Registrar registrar) {
         MethodChannel channel = new MethodChannel(registrar.messenger(), CHANNEL);
@@ -58,14 +59,15 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
             type = call.argument("type");
             sharePanelTitle = call.argument("sharePanelTitle");
             subject = call.argument("subject");
-            share(list, type, sharePanelTitle, subject);
+            extraText = call.argument("extraText");
+            share(list, type, sharePanelTitle, subject, extraText);
             result.success(null);
         } else {
             result.notImplemented();
         }
     }
 
-    private void share(List<String> list, String type, String sharePanelTitle, String subject) {
+    private void share(List<String> list, String type, String sharePanelTitle, String subject, String extraText) {
         ArrayList<Uri> uriList = new ArrayList<>();;
 
         if (list == null || list.isEmpty()) {
@@ -86,7 +88,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
                     return;
                 }
             }
-
+            shareIntent.putExtra(Intent.EXTRA_TEXT, extraText);
             for (String path : list) {
                 File f = new File(path);
                 Uri uri = ShareUtils.getUriForFile(getContext(), f);
@@ -139,7 +141,7 @@ public class ShareExtendPlugin implements MethodChannel.MethodCallHandler, Plugi
     @Override
     public boolean onRequestPermissionsResult(int requestCode, String[] perms, int[] grantResults) {
         if (requestCode == CODE_ASK_PERMISSION && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            share(list, type, sharePanelTitle, subject);
+            share(list, type, sharePanelTitle, subject, extraText);
         }
         return false;
     }

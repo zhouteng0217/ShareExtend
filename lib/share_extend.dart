@@ -14,27 +14,27 @@ class ShareExtend {
   static const MethodChannel _channel =
       const MethodChannel('com.zt.shareextend/share_extend');
 
-  ///
-  /// [sharePositionOrigin] only supports ios
+  /// method to share with system ui
+  ///  It uses the ACTION_SEND Intent on Android and UIActivityViewController
+  /// on iOS.
+  /// [list] can be text or path list
+  /// [type]  "text", "image" ,"file"
+  /// [sharePositionOrigin] only supports iPad os
+  /// [sharePanelTitle] only supports android (some devices may not support)
+  /// [subject] Intent.EXTRA_SUBJECT on Android and "subject" on iOS.
+  /// [extraText] only supports android for Intent.EXTRA_TEXT when sharing image or file.
   ///
   static Future<void> shareMultiple(List<String> list, String type,
-      {Rect sharePositionOrigin, String sharePanelTitle, String subject}) {
+      {Rect sharePositionOrigin,
+      String sharePanelTitle,
+      String subject = "",
+      String extraText = ""}) {
     assert(list != null && list.isNotEmpty);
     return _shareInner(list, type,
         sharePositionOrigin: sharePositionOrigin,
         subject: subject,
-        sharePanelTitle: sharePanelTitle);
-  }
-
-  static Future<void> share(String text, String type,
-      {Rect sharePositionOrigin, String sharePanelTitle, String subject = ""}) {
-    assert(text != null);
-    assert(text.isNotEmpty);
-    List<String> list = [text];
-    return _shareInner(list, type,
-        sharePositionOrigin: sharePositionOrigin,
         sharePanelTitle: sharePanelTitle,
-        subject: subject);
+        extraText: extraText);
   }
 
   /// method to share with system ui
@@ -42,16 +42,41 @@ class ShareExtend {
   /// on iOS.
   /// [list] can be text or path list
   /// [type]  "text", "image" ,"file"
-  /// [sharePositionOrigin] only supports ios
+  /// [sharePositionOrigin] only supports iPad os
+  /// [sharePanelTitle] only supports android (some devices may not support)
+  /// [subject] Intent.EXTRA_SUBJECT on Android and "subject" on iOS.
+  /// [extraText] only supports android for Intent.EXTRA_TEXT when sharing image or file.
   ///
+  static Future<void> share(String text, String type,
+      {Rect sharePositionOrigin,
+      String sharePanelTitle,
+      String subject = "",
+      String extraText = ""}) {
+    assert(text != null);
+    assert(text.isNotEmpty);
+    List<String> list = [text];
+    return _shareInner(
+      list,
+      type,
+      sharePositionOrigin: sharePositionOrigin,
+      sharePanelTitle: sharePanelTitle,
+      subject: subject,
+      extraText: extraText,
+    );
+  }
+
   static Future<void> _shareInner(List<String> list, String type,
-      {Rect sharePositionOrigin, String sharePanelTitle, String subject}) {
+      {Rect sharePositionOrigin,
+      String sharePanelTitle,
+      String subject,
+      String extraText}) {
     assert(list != null && list.isNotEmpty);
     final Map<String, dynamic> params = <String, dynamic>{
       'list': list,
       'type': type,
       'sharePanelTitle': sharePanelTitle,
-      'subject': subject
+      'subject': subject,
+      'extraText': extraText
     };
     if (sharePositionOrigin != null) {
       params['originX'] = sharePositionOrigin.left;
