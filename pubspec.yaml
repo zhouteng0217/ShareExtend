@@ -18,9 +18,12 @@ dependencies:
 # The following section is specific to Flutter.
 flutter:
   plugin:
-    androidPackage: com.zt.shareextend
-    pluginClass: ShareExtendPlugin
-    iosPrefix: FLT
+    platforms:
+      android:
+        package: com.zt.shareextend
+        pluginClass: ShareExtendPlugin
+      ios:
+        pluginClass: FLTShareExtendPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
