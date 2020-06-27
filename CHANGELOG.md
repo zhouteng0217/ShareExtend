@@ -1,3 +1,7 @@
+## 1.1.8
+# support android embedding v2 api
+# add extraText option for android Intent.EXTRA_TEXT when sharing image or file.
+
 ## 1.1.7
 * set default popover point on the ipad
 
