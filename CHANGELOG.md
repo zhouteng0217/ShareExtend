@@ -1,3 +1,6 @@
+## 1.1.9
+* fix ios not found module issue.
+
 ## 1.1.8
 * support android embedding v2 api
 * add extraText option for android Intent.EXTRA_TEXT when sharing image or file.
