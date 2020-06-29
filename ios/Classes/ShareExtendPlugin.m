@@ -1,6 +1,6 @@
 #import "ShareExtendPlugin.h"
 
-@implementation FLTShareExtendPlugin
+@implementation ShareExtendPlugin
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel* shareChannel = [FlutterMethodChannel
