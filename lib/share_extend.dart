@@ -18,7 +18,7 @@ class ShareExtend {
   ///  It uses the ACTION_SEND Intent on Android and UIActivityViewController
   /// on iOS.
   /// [list] can be text or path list
-  /// [type]  "text", "image" ,"file"
+  /// [type]  "text", "image", "audio", "video" or "file"
   /// [sharePositionOrigin] only supports iPad os
   /// [sharePanelTitle] only supports android (some devices may not support)
   /// [subject] Intent.EXTRA_SUBJECT on Android and "subject" on iOS.
