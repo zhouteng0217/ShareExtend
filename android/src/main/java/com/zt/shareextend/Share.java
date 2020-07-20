@@ -82,6 +82,8 @@ public class Share {
                 shareIntent.setType("image/*");
             } else if ("video".equals(type)) {
                 shareIntent.setType("video/*");
+            } else if ("audio".equals(type)) {
+                shareIntent.setType("audio/*");
             } else {
                 shareIntent.setType("application/*");
             }
