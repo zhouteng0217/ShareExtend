@@ -25,8 +25,8 @@ class ShareExtend {
   /// [extraText] only supports android for Intent.EXTRA_TEXT when sharing image or file.
   ///
   static Future<void> shareMultiple(List<String> list, String type,
-      {Rect sharePositionOrigin,
-      String sharePanelTitle,
+      {Rect? sharePositionOrigin,
+      String? sharePanelTitle,
       String subject = "",
       String extraText = ""}) {
     assert(list != null && list.isNotEmpty);
@@ -48,8 +48,8 @@ class ShareExtend {
   /// [extraText] only supports android for Intent.EXTRA_TEXT when sharing image or file.
   ///
   static Future<void> share(String text, String type,
-      {Rect sharePositionOrigin,
-      String sharePanelTitle,
+      {Rect? sharePositionOrigin,
+      String? sharePanelTitle,
       String subject = "",
       String extraText = ""}) {
     assert(text != null);
@@ -66,10 +66,10 @@ class ShareExtend {
   }
 
   static Future<void> _shareInner(List<String> list, String type,
-      {Rect sharePositionOrigin,
-      String sharePanelTitle,
-      String subject,
-      String extraText}) {
+      {Rect? sharePositionOrigin,
+      String? sharePanelTitle,
+      String? subject,
+      String? extraText}) {
     assert(list != null && list.isNotEmpty);
     final Map<String, dynamic> params = <String, dynamic>{
       'list': list,

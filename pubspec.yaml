@@ -5,11 +5,11 @@ author: zhouteng <qfszyq@gmail.com>
 homepage: https://github.com/zhouteng0217/ShareExtend
 
 environment:
-  sdk: ">=2.0.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
   flutter: ">=1.10.0 <2.0.0"
 
 dependencies:
-  meta: ^1.0.5
+  meta: ^1.3.0
   flutter:
     sdk: flutter
 
