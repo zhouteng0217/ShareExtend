@@ -48,7 +48,7 @@ public class Share {
         String type = call.argument("type");
         String sharePanelTitle = call.argument("sharePanelTitle");
         String subject = call.argument("subject");
-        String extraText = call.argument("extraText");
+        ArrayList<String> extraTexts = call.argument("extraTexts");
 
         if (list == null || list.isEmpty()) {
             throw new IllegalArgumentException("Non-empty list expected");
@@ -71,7 +71,6 @@ public class Share {
                     return;
                 }
             }
-            shareIntent.putExtra(Intent.EXTRA_TEXT, extraText);
             for (String path : list) {
                 File f = new File(path);
                 Uri uri = ShareUtils.getUriForFile(context, f);
@@ -88,9 +87,11 @@ public class Share {
                 shareIntent.setType("application/*");
             }
             if (uriList.size() == 1) {
+                shareIntent.putExtra(Intent.EXTRA_TEXT, extraTexts != null && !extraTexts.isEmpty() ? extraTexts.get(0) : null);
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_STREAM, uriList.get(0));
             } else {
+                shareIntent.putExtra(Intent.EXTRA_TEXT, extraTexts);
                 shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
                 shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
             }

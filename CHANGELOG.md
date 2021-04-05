@@ -1,3 +1,7 @@
+## 1.2.0
+* support audio share
+* null safety support
+
 ## 1.1.9
 * fix ios not found module issue.
 
