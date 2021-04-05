@@ -35,7 +35,11 @@ class _MyAppState extends State<MyApp> {
           child: Center(
             child: Column(
               children: <Widget>[
-                RaisedButton(
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.white70),
+                      foregroundColor: MaterialStateProperty.all(Colors.black)),
                   onPressed: () {
                     ShareExtend.share("share text", "text",
                         sharePanelTitle: "share text title",
@@ -43,10 +47,14 @@ class _MyAppState extends State<MyApp> {
                   },
                   child: Text("share text"),
                 ),
-                RaisedButton(
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.white70),
+                      foregroundColor: MaterialStateProperty.all(Colors.black)),
                   onPressed: () async {
-                    final res = await _picker.getImage(
-                        source: ImageSource.gallery);
+                    final res =
+                        await _picker.getImage(source: ImageSource.gallery);
                     if (res.path != null) {
                       ShareExtend.share(res.path, "image",
                           sharePanelTitle: "share image title",
@@ -55,23 +63,35 @@ class _MyAppState extends State<MyApp> {
                   },
                   child: Text("share image"),
                 ),
-                RaisedButton(
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.white70),
+                      foregroundColor: MaterialStateProperty.all(Colors.black)),
                   onPressed: () async {
-                    final res = await _picker.getVideo(
-                        source: ImageSource.gallery);
+                    final res =
+                        await _picker.getVideo(source: ImageSource.gallery);
                     if (res.path != null) {
                       ShareExtend.share(res.path, "video");
                     }
                   },
                   child: Text("share video"),
                 ),
-                RaisedButton(
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.white70),
+                      foregroundColor: MaterialStateProperty.all(Colors.black)),
                   onPressed: () {
                     _shareStorageFile();
                   },
                   child: Text("share file"),
                 ),
-                RaisedButton(
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.white70),
+                      foregroundColor: MaterialStateProperty.all(Colors.black)),
                   onPressed: () {
                     _shareMultipleImages();
                   },
@@ -88,13 +108,13 @@ class _MyAppState extends State<MyApp> {
   ///share multiple images
   _shareMultipleImages() async {
     List<Asset> assetList = await MultiImagePicker.pickImages(maxImages: 5);
-    var imageList = List<String>();
+    var imageList = <String>[];
     for (var asset in assetList) {
       String path =
           await _writeByteToImageFile(await asset.getByteData(quality: 30));
       imageList.add(path);
     }
-    ShareExtend.shareMultiple(imageList, "image", subject: "share muti image");
+    ShareExtend.shareMultiple(imageList, "image", subject: "share multi image");
   }
 
   Future<String> _writeByteToImageFile(ByteData byteData) async {
