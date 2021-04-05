@@ -12,7 +12,7 @@ First, add `share_extend` as a dependency in your pubspec.yaml file.
 
 ```
 dependencies:
-  share_extend: "^1.2.0"
+  share_extend: "^2.0.0"
 ```
 
 ### iOS

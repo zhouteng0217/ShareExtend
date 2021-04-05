@@ -1,4 +1,4 @@
-## 1.2.0
+## 2.0.0
 * support audio share
 * null safety support
 
