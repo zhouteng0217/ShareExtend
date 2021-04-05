@@ -17,6 +17,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
@@ -43,10 +45,10 @@ class _MyAppState extends State<MyApp> {
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    File f = await ImagePicker.pickImage(
+                    final res = await _picker.getImage(
                         source: ImageSource.gallery);
-                    if (f != null) {
-                      ShareExtend.share(f.path, "image",
+                    if (res.path != null) {
+                      ShareExtend.share(res.path, "image",
                           sharePanelTitle: "share image title",
                           subject: "share image subject");
                     }
@@ -55,10 +57,10 @@ class _MyAppState extends State<MyApp> {
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    File f = await ImagePicker.pickVideo(
+                    final res = await _picker.getVideo(
                         source: ImageSource.gallery);
-                    if (f != null) {
-                      ShareExtend.share(f.path, "video");
+                    if (res.path != null) {
+                      ShareExtend.share(res.path, "video");
                     }
                   },
                   child: Text("share video"),
