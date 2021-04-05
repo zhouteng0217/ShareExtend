@@ -1,4 +1,4 @@
-Language: [English](https://github.com/zhouteng0217/ShareExtend/blob/master/README-en.md) | [中文简体](https://github.com/zhouteng0217/ShareExtend/blob/master/README.md)
+Language: [English](https://github.com/zhouteng0217/ShareExtend/blob/master/README.md) | [中文简体](https://github.com/zhouteng0217/ShareExtend/blob/master/README-cn.md)
 
 # ShareExtend
 
