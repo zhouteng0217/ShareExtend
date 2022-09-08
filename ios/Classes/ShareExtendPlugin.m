@@ -59,7 +59,13 @@
 + (void)share:(NSArray *)sharedItems atSource:(CGRect)origin withSubject:(NSString *) subject {
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:sharedItems applicationActivities:nil];
     
-    UIViewController *controller =[UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *controller = [UIApplication sharedApplication].keyWindow.rootViewController;
+    
+    if ([[[UIApplication sharedApplication] delegate] respondsToSelector:@selector(presentingViewControllerForShareExtend)]) {
+        id<ShareExtendPluginDelegate> delegate = [[UIApplication sharedApplication] delegate];
+        controller = [delegate presentingViewControllerForShareExtend];
+    }
+        
     activityViewController.popoverPresentationController.sourceView = controller.view;
 
     if (CGRectIsEmpty(origin)) {
