@@ -60,6 +60,12 @@
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:sharedItems applicationActivities:nil];
     
     UIViewController *controller =[UIApplication sharedApplication].keyWindow.rootViewController;
+    
+    // obtain top presented viewController
+    while (controller.presentedViewController) {
+        controller = controller.presentedViewController;
+    }
+    
     activityViewController.popoverPresentationController.sourceView = controller.view;
 
     if (CGRectIsEmpty(origin)) {
